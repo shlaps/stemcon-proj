@@ -1,0 +1,109 @@
+[gd_scene load_steps=10 format=3 uid="uid://bxi4qmg030kgy"]
+
+[ext_resource type="Script" path="res://Scripts/Organism.gd" id="1_decic"]
+[ext_resource type="Texture2D" uid="uid://w48rmhl130ak" path="res://Art/playertemp.png" id="2_x7pwq"]
+
+[sub_resource type="Animation" id="Animation_foa7t"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_vhgo0"]
+resource_name = "hurt"
+length = 0.08
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.02, 0.04, 0.08),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(5, 0), Vector2(-7, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_2kitl"]
+_data = {
+"RESET": SubResource("Animation_foa7t"),
+"hurt": SubResource("Animation_vhgo0")
+}
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dl2cu"]
+bg_color = Color(1, 1, 1, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_wfuey"]
+bg_color = Color(0.603922, 0, 0.00784314, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4ripw"]
+bg_color = Color(0.760784, 0.498039, 0.0470588, 1)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_xaq3l"]
+radius = 7.0
+
+[node name="Burd" type="Node2D"]
+script = ExtResource("1_decic")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("2_x7pwq")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_2kitl")
+}
+
+[node name="TurnCooldown" type="Timer" parent="."]
+one_shot = true
+
+[node name="HealthMeter" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(0, 25)
+offset_left = -10.0
+offset_top = -13.0
+offset_right = 10.0
+offset_bottom = 12.0
+scale = Vector2(1, 0.1)
+theme_override_styles/background = SubResource("StyleBoxFlat_dl2cu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_wfuey")
+value = 50.0
+show_percentage = false
+
+[node name="HungerMeter" type="ProgressBar" parent="."]
+custom_minimum_size = Vector2(0, 25)
+offset_left = -10.0
+offset_top = -11.0
+offset_right = 10.0
+offset_bottom = 14.0
+scale = Vector2(1, 0.05)
+theme_override_styles/background = SubResource("StyleBoxFlat_dl2cu")
+theme_override_styles/fill = SubResource("StyleBoxFlat_4ripw")
+value = 50.0
+show_percentage = false
+
+[node name="BebeCooldown" type="Timer" parent="."]
+wait_time = 80.0
+one_shot = true
+
+[node name="Body" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
+shape = SubResource("CircleShape2D_xaq3l")
+
+[connection signal="timeout" from="TurnCooldown" to="." method="_on_turn_cooldown_timeout"]
+[connection signal="timeout" from="BebeCooldown" to="." method="_on_bebe_cooldown_timeout"]
+[connection signal="input_event" from="Body" to="." method="_on_body_input_event"]
+[connection signal="mouse_entered" from="Body" to="." method="_on_body_mouse_entered"]
+[connection signal="mouse_exited" from="Body" to="." method="_on_body_mouse_exited"]

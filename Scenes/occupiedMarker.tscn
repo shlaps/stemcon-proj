@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://cpgmiqogs81qn"]
+
+[ext_resource type="Texture2D" uid="uid://w48rmhl130ak" path="res://Art/playertemp.png" id="1_s576r"]
+
+[node name="Node" type="Sprite2D"]
+modulate = Color(0, 0, 1, 1)
+z_index = 5
+texture_filter = 1
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("1_s576r")

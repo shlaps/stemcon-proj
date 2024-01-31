@@ -1,0 +1,55 @@
+[gd_scene load_steps=3 format=3 uid="uid://b61pb34u8x8dd"]
+
+[ext_resource type="Script" path="res://Scripts/OrganismClicked.gd" id="1_sbpj5"]
+[ext_resource type="Script" path="res://Scripts/birdcount.gd" id="2_xfpa6"]
+
+[node name="BurdUI" type="CanvasLayer"]
+script = ExtResource("1_sbpj5")
+
+[node name="BurdInfo" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.314441, 0.0964529)
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BurdInfo"]
+layout_mode = 0
+offset_right = 223.0
+offset_bottom = 73.0
+scale = Vector2(6.27693, 12.433)
+text = "heyyy
+"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="Button" type="Button" parent="BurdInfo"]
+layout_mode = 0
+offset_left = 25.0
+offset_top = 912.0
+offset_right = 550.0
+offset_bottom = 1576.0
+theme_override_font_sizes/font_size = 200
+text = "Close"
+
+[node name="birdcount" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+scale = Vector2(0.314441, 0.0964529)
+script = ExtResource("2_xfpa6")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="birdcount"]
+layout_mode = 0
+offset_left = 3129.36
+offset_top = 248.826
+offset_right = 3229.36
+offset_bottom = 288.826
+scale = Vector2(6.27693, 12.433)
+text = "birds: 0
+"
+
+[node name="ForceUpdate" type="Timer" parent="birdcount"]
+wait_time = 10.0
+autostart = true
+
+[connection signal="pressed" from="BurdInfo/Button" to="." method="_on_button_pressed"]
+[connection signal="timeout" from="birdcount/ForceUpdate" to="birdcount" method="_on_force_update_timeout"]

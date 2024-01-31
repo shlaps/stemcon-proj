@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://bxi4qmg030kgy"]
+
+[ext_resource type="Texture2D" uid="uid://w48rmhl130ak" path="res://playertemp.png" id="1_tdedy"]
+[ext_resource type="Script" path="res://Organism.gd" id="1_vs227"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_0t5aj"]
+radius = 6.86
+
+[sub_resource type="Animation" id="Animation_3mkg4"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_srlwb"]
+resource_name = "hurt"
+length = 0.4
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.2, 0.3, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0.4, 0), Vector2(-1, 0), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_i2bqn"]
+_data = {
+"RESET": SubResource("Animation_3mkg4"),
+"hurt": SubResource("Animation_srlwb")
+}
+
+[sub_resource type="CanvasTexture" id="CanvasTexture_mjmmr"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_nrwvo"]
+
+[node name="Organism" type="CharacterBody2D"]
+script = ExtResource("1_vs227")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture_filter = 1
+scale = Vector2(0.8, 0.8)
+texture = ExtResource("1_tdedy")
+
+[node name="Body" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_0t5aj")
+
+[node name="TurnCooldown" type="Timer" parent="."]
+wait_time = 2.0
+one_shot = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_i2bqn")
+}
+
+[node name="Meters" type="Node2D" parent="."]
+
+[node name="Background" type="Sprite2D" parent="Meters"]
+position = Vector2(0, -10)
+scale = Vector2(14, 1)
+texture = SubResource("CanvasTexture_mjmmr")
+
+[node name="HealthMeter" type="Sprite2D" parent="Meters"]
+modulate = Color(0.85098, 0.121569, 0.270588, 1)
+z_index = 1
+position = Vector2(-7, -10)
+scale = Vector2(14, 1)
+texture = SubResource("CanvasTexture_mjmmr")
+offset = Vector2(0.5, 0)
+
+[node name="HungerMeter" type="Sprite2D" parent="Meters"]
+modulate = Color(0.945098, 0.866667, 0.113725, 1)
+z_index = 1
+material = SubResource("CanvasItemMaterial_nrwvo")
+position = Vector2(-7, -9.25)
+scale = Vector2(14, 0.5)
+texture = SubResource("CanvasTexture_mjmmr")
+offset = Vector2(0.5, 0)
+
+[connection signal="timeout" from="TurnCooldown" to="." method="_on_turn_cooldown_timeout"]

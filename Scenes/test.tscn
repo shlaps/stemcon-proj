@@ -1,0 +1,5 @@
+[gd_scene format=3]
+
+[node name="_RayCast2D_14644" type="RayCast2D"]
+position = Vector2(8, -136)
+target_position = Vector2(-16, -16)

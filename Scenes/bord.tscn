@@ -1,0 +1,119 @@
+[gd_scene load_steps=11 format=3 uid="uid://m7dtkprtugri"]
+
+[ext_resource type="Script" path="res://Scripts/bord.gd" id="1_uuf77"]
+[ext_resource type="Texture2D" uid="uid://w48rmhl130ak" path="res://Art/playertemp.png" id="2_wcbt8"]
+[ext_resource type="Texture2D" uid="uid://d3ljd32ve7xxf" path="res://Art/eagle.png" id="3_xl2yy"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_00e5p"]
+radius = 120.0
+
+[sub_resource type="Curve2D" id="Curve2D_5t0k8"]
+_data = {
+"points": PackedVector2Array(-36.9143, -32.2838, 36.9143, 32.2838, -750, -300, -126.843, 1.90326, 126.843, -1.90326, -11.4286, -11.4286, -65.4779, 38.6202, 65.4779, -38.6202, 331.429, -11.4286, -47.5684, 1.09536, 47.5684, -1.09536, 571.428, -114.286, -129.185, 60.9024, 129.185, -60.9024, 948.571, -171.429, 0, 0.76, 0, 0, 1360, -262.857, 0, 0, 0, 0, 1817.14, -331.429)
+}
+point_count = 7
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_o2ppt"]
+atlas = ExtResource("3_xl2yy")
+region = Rect2(16, 0, 16, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_saqyk"]
+atlas = ExtResource("3_xl2yy")
+region = Rect2(0, 0, 16, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vonjm"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_o2ppt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_saqyk")
+}],
+"loop": true,
+"name": &"default",
+"speed": 10.0
+}]
+
+[sub_resource type="Animation" id="Animation_goox1"]
+resource_name = "fly_loop"
+length = 0.7
+loop_mode = 1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Pivot/AnimatedSprite2D:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25, 0.53, 0.7),
+"transitions": PackedFloat32Array(0.63728, 1, 2.73208, 1),
+"update": 0,
+"values": [Vector2(0, 0), Vector2(0, -45), Vector2(0, 20), Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sh4vd"]
+_data = {
+"fly_loop": SubResource("Animation_goox1")
+}
+
+[node name="Bord" type="Node"]
+script = ExtResource("1_uuf77")
+
+[node name="Area2D" type="Area2D" parent="."]
+visible = false
+scale = Vector2(0.5, 0.5)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("CircleShape2D_00e5p")
+
+[node name="Danger" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.839216, 0, 0.168627, 0.466667)
+texture_filter = 1
+scale = Vector2(7, 7)
+texture = ExtResource("2_wcbt8")
+
+[node name="AttackTimer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="Path2D" type="Path2D" parent="."]
+visible = false
+scale = Vector2(0.7, 0.7)
+curve = SubResource("Curve2D_5t0k8")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(-750, -300)
+rotation = 0.718581
+loop = false
+
+[node name="Pivot" type="Node2D" parent="."]
+visible = false
+
+[node name="Shadow" type="Sprite2D" parent="Pivot"]
+modulate = Color(0, 0, 0, 0.466667)
+z_index = -1
+texture_filter = 1
+position = Vector2(0, 100)
+scale = Vector2(8, 8)
+texture = ExtResource("2_wcbt8")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Pivot"]
+texture_filter = 1
+scale = Vector2(10, 10)
+sprite_frames = SubResource("SpriteFrames_vonjm")
+frame_progress = 0.636423
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_sh4vd")
+}
+autoplay = "fly_loop"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_area_2d_area_entered"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
