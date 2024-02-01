@@ -8,7 +8,7 @@
 [ext_resource type="Script" path="res://Scripts/CameraMovement.gd" id="5_ela3j"]
 [ext_resource type="PackedScene" uid="uid://bmk24rbm5yqci" path="res://Scenes/cleaner.tscn" id="6_er5k0"]
 [ext_resource type="Script" path="res://Scenes/createburds.gd" id="7_3xvdq"]
-[ext_resource type="PackedScene" uid="uid://b61pb34u8x8dd" path="res://Scenes/BurdUI.tscn" id="8_ngx2a"]
+[ext_resource type="PackedScene" uid="uid://b61pb34u8x8dd" path="res://BurdUI.tscn" id="8_ngx2a"]
 [ext_resource type="PackedScene" uid="uid://m7dtkprtugri" path="res://Scenes/bord.tscn" id="8_qn0om"]
 
 [sub_resource type="Gradient" id="Gradient_3ymuv"]

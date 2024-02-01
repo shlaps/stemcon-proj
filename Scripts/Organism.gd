@@ -28,6 +28,8 @@ var genotypes = {
 		"Bb" = Color.DARK_GREEN,
 		"bb" = Color.WHITE
 	}
+	
+var visRate = 100.0
 var genotype
 
 signal clicked
@@ -40,11 +42,28 @@ signal clicked
 @onready var tile = WorldNode.find_child("TileMap") as TileMap
 
 var tile_coords = [
+	
 	Vector2(1,1),
 	Vector2(0,1),
 	Vector2(1,0),
 	Vector2(0,0)
 	]
+	
+func compColor(base, comparer = $Sprite2D.modulate): #sprite color, tile color
+	var invisRate = 0
+		
+	var CompColor = base - comparer
+	CompColor.r = abs(CompColor.r)
+	CompColor.g = abs(CompColor.g)
+	CompColor.b = abs(CompColor.b)
+	
+	invisRate += 1 - CompColor.r
+	invisRate += 1 - CompColor.g
+	invisRate += 1 - CompColor.b
+	
+	invisRate /= 3
+	invisRate = pow(invisRate, 2.5)
+	return invisRate # incase of future use - the color will reutrn transparent (CompColor.a = 1 after calculating value to fix)
 
 func setOccupied(boolValue, pos = position):
 	var currentTile = findVegetationData(pos)
@@ -66,7 +85,8 @@ func findVegetationData(pos):
 		"tile_data" = null,
 		"vegetation_data" = null,
 		"isOccupied" = null,
-		"isWall" = null
+		"isWall" = null,
+		"tileColor" = null
  	}
 	
 	var tile_pos = tile.local_to_map(pos)
@@ -79,12 +99,14 @@ func findVegetationData(pos):
 	var vegetation_data = tile_data.get_custom_data_by_layer_id(0)
 	var isOccupied = tile_data.get_custom_data_by_layer_id(1)
 	var isWall = tile_data.get_custom_data_by_layer_id(2)
+	var tileColor = tile_data.modulate
 	
 	tileTable.tile_data = tile_data
 	tileTable.tile_pos = tile_pos
 	tileTable.vegetation_data = vegetation_data
 	tileTable.isOccupied = isOccupied
 	tileTable.isWall = isWall
+	tileTable.tileColor = tileColor
 	return tileTable
 	
 func lerpPosition(obj, target, dur = 1.0, start = null):
@@ -101,6 +123,8 @@ func lerpPosition(obj, target, dur = 1.0, start = null):
 			break
 			
 	obj.position = target
+	if health <= 0:
+		die()
 
 func lerpSize(obj, target, dur = 1.0, start = null): #maybe just merge the lerp funcs into one but idc
 	var t = 0.0
@@ -145,6 +169,7 @@ func createChild(pos, otherParent):
 # but i barely know what that is and im lazy and this is a bio project wtf am i saying
 func roam_func(): 
 	if isHiding: return
+	visRate = 0.0
 	var possibleMoves := [
 		Vector2(position.x + 16, position.y),
 		Vector2(position.x - 16, position.y),
@@ -161,16 +186,19 @@ func roam_func():
 	var selectedTile = null
 	
 	for i in possibleMoves:
-		var tile_data = findVegetationData(i)
+		var tile_data = findVegetationData(i) # turns table of the tile passed
 		var veggie_data = tile_data.get("vegetation_data")
 		var isOccupied = tile_data.get("isOccupied")
 		var isWall = tile_data.get("isWall")
+		var tileColor = tile_data.get("tileColor")
 		
 		if not isWall and veggie_data == -1 and shouldHide:
 			selectedTile = i
 			isHiding = true
 			setOccupied(true)
-			#await lerpPosition(self, selectedTile, 0.5)
+			var newRate = compColor(tileColor)
+			visRate = newRate * 100
+			print(newRate," ", visRate)
 			return
 		
 		if canBreed: # BREEDING RAYCASTS
@@ -237,15 +265,13 @@ func consume():
 	
 func die():
 	setOccupied(false)
-	await await get_tree().create_timer(0.05).timeout
+	await lerpSize($Sprite2D, Vector2(0,0))
 	queue_free()
 	
 func hurt(dmg = 1):
 	animator.play("hurt")
 	health -= dmg
 	updateMeter(hpMeter, health, maxHealth)
-	if health <= 0:
-		die()
 		
 func heal(amt = 1):
 	health += amt
@@ -283,12 +309,13 @@ func _on_turn_cooldown_timeout() -> void:
 	if hunger <= 0:
 		hurt()
 	
-	roam_func()
+	
 	if hunger < (maxHunger * 0.8):
 		consume()
 		
 	turnsTilHunger += 1
 	
+	roam_func()
 	if turnsTilHunger < (5 / metabolism): #early return, only triggers after n turns
 		return
 	

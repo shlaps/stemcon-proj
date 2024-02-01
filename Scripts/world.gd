@@ -5,6 +5,7 @@ class_name world
 @onready var TileTimers = $TileTimers
 @onready var cleanupRay = $TileTimers/CleanUp/CleanerUpper as Area2D
 @onready var dayTimer = $DayTimer as Timer
+@onready var burdContainer = find_child("birds") as Node
 
 var currentTime = 0
 
@@ -90,11 +91,9 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("pause_game"):
 		Engine.time_scale = 0
 	elif Input.is_action_just_pressed("set_speed_two"):
-		Engine.time_scale = 10
+		Engine.time_scale += 1
 	elif Input.is_action_just_pressed("set_speed_one"):
-		Engine.time_scale = 1
-
-
+		Engine.time_scale -= 1
 
 func _on_day_timer_timeout() -> void:
 	currentTime += 1
@@ -105,4 +104,3 @@ func _on_day_timer_timeout() -> void:
 	dayTimer.wait_time = times[currentTime]
 	dayTimer.start()
 	timeChanged.emit(currentTime)
-	

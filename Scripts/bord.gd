@@ -35,14 +35,14 @@ func lerpPosition(obj, target, start = null, dur = 1.0):
 func hunt():
 	for i in collisionArea.get_overlapping_areas():
 		var burdTarget = i.get_parent() as burd
-		var chance = 90.0
+		var chance = 0.0
 		
 		if burdTarget.isHiding:
-			chance = 10.0 # temp until we can compare color
+			chance = burdTarget.visRate
 		
-		if randf_range(0, 100) <= chance:
-			burdTarget.queue_free()
-			print("killing ", burdTarget.name)
+		if randf_range(0, 100) >= chance:
+			burdTarget.die()
+			print("killing ", burdTarget.name, burdTarget.visRate)
 			
 	
 func toggleBordVisibility(val):

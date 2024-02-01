@@ -39,13 +39,14 @@ script = ExtResource("2_xfpa6")
 
 [node name="RichTextLabel" type="RichTextLabel" parent="birdcount"]
 layout_mode = 0
-offset_left = 3129.36
-offset_top = 248.826
-offset_right = 3229.36
-offset_bottom = 288.826
+offset_left = 2801.8
+offset_top = 72.5743
+offset_right = 2924.8
+offset_bottom = 112.574
 scale = Vector2(6.27693, 12.433)
 text = "birds: 0
 "
+scroll_active = false
 
 [node name="ForceUpdate" type="Timer" parent="birdcount"]
 wait_time = 10.0

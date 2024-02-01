@@ -6,7 +6,6 @@ extends CanvasLayer
 @onready var BurdText = $BurdInfo/RichTextLabel as RichTextLabel
 
 func gotClicked(obj : burd):
-	print("yo")
 	BurdText.text = str(obj.name, "'s genotype: ", obj.genotype)
 	BurdInfo.visible = true
 
@@ -20,7 +19,6 @@ func _ready() -> void:
 
 func connectBurd(node: Node) -> void:
 	if node is burd:
-		print("burd")
 		node.connect("clicked", Callable(self, "gotClicked").bind(node))
 
 
