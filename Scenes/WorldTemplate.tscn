@@ -1,0 +1,63 @@
+[gd_scene load_steps=13 format=3 uid="uid://4wyp7nqsdy78"]
+
+[ext_resource type="Script" path="res://Scripts/world.gd" id="1_1qimx"]
+[ext_resource type="TileSet" uid="uid://c4a4rly5hit4v" path="res://Art/groundtile.tres" id="2_u0u42"]
+[ext_resource type="Script" path="res://Scripts/GroundMap.gd" id="3_jo3dm"]
+[ext_resource type="PackedScene" uid="uid://cpgmiqogs81qn" path="res://Scenes/occupiedMarker.tscn" id="4_6iuac"]
+[ext_resource type="Script" path="res://Scripts/CameraMovement.gd" id="5_a3pr1"]
+[ext_resource type="Script" path="res://Scenes/createburds.gd" id="6_t6q0k"]
+[ext_resource type="PackedScene" uid="uid://bxi4qmg030kgy" path="res://Scenes/Organism.tscn" id="7_n88gs"]
+[ext_resource type="Script" path="res://Scenes/CreateBushes.gd" id="8_e63mr"]
+[ext_resource type="PackedScene" uid="uid://b61pb34u8x8dd" path="res://Scenes/BurdUI.tscn" id="8_r1kuv"]
+[ext_resource type="PackedScene" uid="uid://ctvjgfjj1yhmh" path="res://BerryBush.tscn" id="9_piq5v"]
+
+[sub_resource type="Gradient" id="Gradient_3ymuv"]
+colors = PackedColorArray(0.0470588, 0.282353, 1, 1, 0.0470588, 0.282353, 1, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_4tj3q"]
+gradient = SubResource("Gradient_3ymuv")
+width = 5000
+height = 5000
+
+[node name="World" type="Node2D"]
+script = ExtResource("1_1qimx")
+times = [180, 60, 240]
+metadata/_edit_lock_ = true
+
+[node name="TileMap" type="TileMap" parent="."]
+z_index = -2
+texture_filter = 1
+tile_set = ExtResource("2_u0u42")
+format = 2
+script = ExtResource("3_jo3dm")
+occupiedMarker = ExtResource("4_6iuac")
+metadata/_edit_lock_ = true
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(280, 168)
+script = ExtResource("5_a3pr1")
+
+[node name="TileTimers" type="Node" parent="."]
+
+[node name="birds" type="Node" parent="."]
+script = ExtResource("6_t6q0k")
+burdScene = ExtResource("7_n88gs")
+desiredNumber = 5
+
+[node name="Bushes" type="Node" parent="."]
+script = ExtResource("8_e63mr")
+bushScene = ExtResource("9_piq5v")
+
+[node name="DayTimer" type="Timer" parent="."]
+wait_time = 300.0
+
+[node name="Sky" type="Sprite2D" parent="."]
+modulate = Color(0.180392, 0.498039, 0.619608, 1)
+z_index = -500
+texture = SubResource("GradientTexture2D_4tj3q")
+metadata/_edit_lock_ = true
+
+[node name="BurdUI" parent="." instance=ExtResource("8_r1kuv")]
+visible = false
+
+[connection signal="timeout" from="DayTimer" to="." method="_on_day_timer_timeout"]

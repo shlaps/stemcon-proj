@@ -2,7 +2,6 @@ extends Node
 class_name bord
 
 @onready var danger = $Danger as Sprite2D
-@onready var shadow = $Shadow as Sprite2D
 @onready var collisionArea = $Area2D as Area2D
 @onready var pivot = $Pivot as Node2D
 @onready var path = $Path2D as Path2D
@@ -58,8 +57,8 @@ func pickTarget():
 		if isWall == false:
 			target = tile.map_to_local(i)
 			break
-	path.position = target
 	collisionArea.position = target
+	path.position = target
 	danger.position = target
 
 
@@ -78,7 +77,7 @@ func _on_attack_timer_timeout() -> void:
 	
 	var pt = 0.0
 	var pdur = 1.0
-	var shouldHunt = true
+	var shouldHunt = true # to prevent loops of hunt()
 	pathFollow.progress_ratio = 0
 	while pt < 1.0:
 		pt += get_process_delta_time() / pdur
@@ -86,7 +85,7 @@ func _on_attack_timer_timeout() -> void:
 		pivot.position = path.to_global(pathFollow.position)
 		pivot.rotation = pathFollow.rotation
 		
-		if pathFollow.progress_ratio >= 0.25 and pathFollow.progress_ratio <= 0.35 and shouldHunt:
+		if pathFollow.progress_ratio >= 0.3 and pathFollow.progress_ratio <= 0.35 and shouldHunt:
 			hunt()
 			shouldHunt = false
 		await(get_tree().create_timer(get_process_delta_time()).timeout)

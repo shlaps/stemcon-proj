@@ -24,7 +24,3 @@ func _ready() -> void:
 		currentNumber += 1
 		if currentNumber >= desiredNumber:
 			break
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass

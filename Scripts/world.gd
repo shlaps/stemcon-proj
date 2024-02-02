@@ -1,15 +1,21 @@
+# unfortunately this is very messy code
+# but shhhhh it works
+#idek where to begin with organizing this honestly
+#its not as bad as the burd code tbh
+#maybe none of this is actually that bad and im just suffering insane amouts of burnout
+# still having fun though!!!!!!!!!!!
+#js wish i had more time to do hw :sob:
+
 extends Node2D
 class_name world
 
 @onready var TileMapObj = $TileMap
 @onready var TileTimers = $TileTimers
-@onready var cleanupRay = $TileTimers/CleanUp/CleanerUpper as Area2D
 @onready var dayTimer = $DayTimer as Timer
-@onready var burdContainer = find_child("birds") as Node
 
 var currentTime = 0
+@export var times = [10, 10, 10] #day, afternoon, night respectively, can be changed in editor
 
-@export var times = [10, 10, 10] #day, afternoon, night respectively
 var timeColor = [Color.AQUAMARINE, Color.NAVY_BLUE, Color.BLACK]
 
 signal timeChanged
@@ -31,6 +37,8 @@ var gt_current : Transform2D
 func update_transform():
 	gt_prev = gt_current
 	gt_current = target.global_transform
+	
+
 
 func _process(_delta):
 	#move sky, looks shitty for somereason if its not a solid color. doesn't matter for this project anyways
@@ -45,7 +53,6 @@ func _process(_delta):
 
 func on_tile_grow(tileTimer, tile_pos):
 	var tile_data = TileMapObj.get_cell_tile_data(0, tile_pos) as TileData
-	var atlas_coords = TileMapObj.get_cell_atlas_coords(0, tile_pos)
 	var isOccupied = tile_data.get_custom_data_by_layer_id(1)
 	var vegetationLevel = tile_data.get_custom_data_by_layer_id(0)
 	if vegetationLevel >= 3:
@@ -61,20 +68,19 @@ func on_tile_grow(tileTimer, tile_pos):
 func _ready() -> void:	
 	sky.visible = true
 	dayTimer.wait_time = times[currentTime]
+	print(times[currentTime])
 	sky.modulate = timeColor[currentTime]
 	dayTimer.start()
 	#grow timer setup
 	for i in TileMapObj.get_used_cells(0):
 		var tile_data = TileMapObj.get_cell_tile_data(0, i) as TileData
-		var atlas_coords = TileMapObj.get_cell_atlas_coords(0, i)
-		var isOccupied = tile_data.get_custom_data_by_layer_id(1)
 		var vegetationLevel = tile_data.get_custom_data_by_layer_id(0)
 		
 		if vegetationLevel == -1: # wall / other obstacle or howver the fuck u spell it
 			continue
 		
 		var tileTimer = Timer.new()
-		tileTimer.set_wait_time(randf_range(30.0, 180.0))  # Set a random initial wait time
+		tileTimer.set_wait_time(randf_range(30.0, 180.0))  # set a random initial wait time
 		TileTimers.add_child(tileTimer)
 		tileTimer.connect("timeout", Callable(self, "on_tile_grow").bind(tileTimer, i))
 		tileTimer.start()
@@ -85,8 +91,9 @@ func _ready() -> void:
 	
 	gt_prev = target.global_transform
 	gt_current = target.global_transform
+	
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	update = true
 	if Input.is_action_just_pressed("pause_game"):
 		Engine.time_scale = 0
@@ -104,3 +111,10 @@ func _on_day_timer_timeout() -> void:
 	dayTimer.wait_time = times[currentTime]
 	dayTimer.start()
 	timeChanged.emit(currentTime)
+	
+	
+	
+	
+	# data collection stuff
+	
+	

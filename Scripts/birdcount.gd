@@ -30,5 +30,5 @@ func removeBird(node: Node) -> void:
 		burdCount -= 1
 		updateBurdCount()
 		
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	text.scroll_to_line(0) #this is bad but theres no other way to diable scrolling in richtext LMFAO

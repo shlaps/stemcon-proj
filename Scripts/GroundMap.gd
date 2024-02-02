@@ -3,7 +3,7 @@ extends TileMap
 
 var enableMarkers = false
 	
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if enableMarkers:
 		for i in get_children():
 			i.queue_free()

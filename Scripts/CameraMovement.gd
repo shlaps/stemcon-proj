@@ -6,7 +6,7 @@ func _ready() -> void:
 	oldMousePos = get_viewport().get_mouse_position()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("CameraDrag"):
 		var newMousePos = get_viewport().get_mouse_position()
 		position -= (newMousePos - oldMousePos).normalized() * clamp(2 * (4.5 / zoom.x), 3, 10)

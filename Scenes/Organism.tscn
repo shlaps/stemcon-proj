@@ -98,6 +98,7 @@ wait_time = 80.0
 one_shot = true
 
 [node name="Body" type="Area2D" parent="."]
+collision_mask = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Body"]
 shape = SubResource("CircleShape2D_xaq3l")

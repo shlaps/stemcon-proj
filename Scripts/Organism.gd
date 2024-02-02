@@ -1,13 +1,11 @@
-#this is some of the worst code ive written btw
-#functionally its mostly fine besides the pathing which is probably causing a loss of performance
+#functionally this is mostly fine besides the pathing which is probably causing a loss of performance
 # its just really bad readability wise
-# for the love of god if you look at this github as an example PLEASE PLEASE PLEASE branch ur nodes
+# for the love of god if you look at this github as an example PLEASE PLEASE PLEASE inherit ur scenes
 # base class (all the funtions each organism needs) -> animals and plants(?) -> specific species
-# this would change based on what ur project is but please if u learn anything from this !!!!!!!!!!!!!!!!!USE CHILD SCENES!!!!!!!!!!!!!!!!!
+# this would change based on what ur project is but please if u learn anything from this !!!!!!!!!!!!!!!!!USE INHERITED SCENES!!!!!!!!!!!!!!!!!
 
 extends Node2D
 class_name burd
-var target 
 
 var maxHunger = 30.0
 var hunger = maxHunger / 2
@@ -62,16 +60,23 @@ func compColor(base, comparer = $Sprite2D.modulate): #sprite color, tile color
 	invisRate += 1 - CompColor.b
 	
 	invisRate /= 3
-	invisRate = pow(invisRate, 2.5)
+	invisRate = pow(invisRate, 2)
 	return invisRate # incase of future use - the color will reutrn transparent (CompColor.a = 1 after calculating value to fix)
 
 func setOccupied(boolValue, pos = position):
 	var currentTile = findVegetationData(pos)
-	var tile_data = currentTile.get("tile_data")
+	var tile_data = currentTile.get("tile_data") as TileData
 	if tile_data == null:
 		return
 	var tile_pos = currentTile.get("tile_pos")
 	var atlas_coords = tile.get_cell_atlas_coords(0, tile_pos)
+	var vegetationLevel = currentTile.get("vegetation_data")
+	
+	if vegetationLevel == -1: # ignore non-vegetation tiles, like hidng spots. hopefully when i implement trees this will go away. since this tile has no occupied varrient, we just return. but needed use tile.get_cell_alternative_tile(0, tile_pos) to get the ALTID
+		return
+	
+	
+
 
 	if tile_data and boolValue:
 		tile.set_cell(0, tile_pos, 1, atlas_coords, 1)
@@ -140,7 +145,15 @@ func lerpSize(obj, target, dur = 1.0, start = null): #maybe just merge the lerp 
 			break
 	obj.scale = target
 	
-func createChild(pos, otherParent):
+func mutate(obj, oldGene):
+	var size = genotypes.size()
+	var selectedgene = genotypes.keys()[randi() % size]
+	if selectedgene == oldGene:
+		mutate(obj, oldGene)
+		return
+	obj.genotype = selectedgene
+	
+func createChild(pos, otherParent): #really really really should clean this up at some point. proably modularize it for other traits too
 	if otherParent.canBreed == false:
 		return
 	var child = duplicate()
@@ -158,6 +171,10 @@ func createChild(pos, otherParent):
 	child.isChild = true
 	child.get_node("TurnCooldown").stop()
 	child.genotype = str(genotype[randi_range(0, 1)], otherParent.genotype[randi_range(0, 1)])
+	if randi_range(1, 25) > 24: # mutation
+		mutate(child, child.genotype)
+		
+	
 	if child.genotype == "bB":
 		child.genotype = "Bb"
 	
@@ -193,23 +210,32 @@ func roam_func():
 		var tileColor = tile_data.get("tileColor")
 		
 		if not isWall and veggie_data == -1 and shouldHide:
+			visRate = compColor(tileColor) * 100
 			selectedTile = i
 			isHiding = true
 			setOccupied(true)
-			var newRate = compColor(tileColor)
-			visRate = newRate * 100
-			print(newRate," ", visRate)
+			
 			return
+			
+		var lookAtTile = RayCast2D.new() # VISION RAYCASTS
+		lookAtTile.collide_with_areas = true
+		lookAtTile.target_position = (i - global_position)
+		lookAtTile.set_collision_mask_value(2, true)
+		add_child(lookAtTile)
+		lookAtTile.exclude_parent = false
+		await get_tree().create_timer(0.01).timeout
 		
-		if canBreed: # BREEDING RAYCASTS
-			var lookAtTile = RayCast2D.new()
-			lookAtTile.collide_with_areas = true
-			lookAtTile.target_position = (i - global_position)
-			add_child(lookAtTile)
-			lookAtTile.exclude_parent = false
-			await get_tree().create_timer(0.01).timeout
+		if lookAtTile.get_collider() != null and lookAtTile.get_collider().get_parent() is plant: # EAT BUSHES
+			var Plant = lookAtTile.get_collider().get_parent() as plant
+			Plant.consume()
+			
+			hunger = clamp(hunger + 20, 0, maxHunger)
+			updateMeter(hungerMeter, hunger, maxHunger)
+			if health < 3:
+				heal()
 		
-			if lookAtTile.is_colliding() and (hunger >= maxHunger * 0.45):
+		if canBreed: # BREEDING
+			if lookAtTile.is_colliding() and (hunger >= maxHunger * 0.45) and lookAtTile.get_collider().get_parent() is burd:
 				var childTile = null
 				
 				for childPos in possibleMoves:
@@ -218,9 +244,14 @@ func roam_func():
 						childTile = childPos
 						break
 				if childTile != null:
-					var otherParent = lookAtTile.get_collider().get_parent()
+					var otherParentCol = lookAtTile.get_collider() as Area2D
+					if otherParentCol == null: return # rare crash occurs without this check, should probably protect against it in most if not all cases
+					var otherParent = otherParentCol.get_parent() as burd
 					createChild(childTile, otherParent)
-			lookAtTile.queue_free()
+					
+		
+		
+		lookAtTile.queue_free()
 			
 		
 			
@@ -265,7 +296,7 @@ func consume():
 	
 func die():
 	setOccupied(false)
-	await lerpSize($Sprite2D, Vector2(0,0))
+	lerpSize($Sprite2D, Vector2(0,0))
 	queue_free()
 	
 func hurt(dmg = 1):
@@ -292,7 +323,6 @@ func _ready() -> void:
 		genotype = selectedgene
 	else:
 		$BebeCooldown.start()
-	print(genotype)
 	$Sprite2D.modulate = genotypes.get(genotype)
 	updateMeter(hpMeter, health, maxHealth)
 	updateMeter(hungerMeter, hunger, maxHunger)
@@ -345,6 +375,6 @@ func _on_body_mouse_exited() -> void:
 	lerpSize($Sprite2D, Vector2(0.8, 0.8), 0.3)
 
 
-func _on_body_input_event(viewport: Node, event: InputEvent, shape_idx: int) -> void:
+func _on_body_input_event(_viewport: Node, event: InputEvent, _shape_idx: int) -> void:
 	if event.is_action_pressed("MousePrimary"):
 		clicked.emit()
