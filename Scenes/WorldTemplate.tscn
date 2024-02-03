@@ -1,15 +1,14 @@
-[gd_scene load_steps=13 format=3 uid="uid://4wyp7nqsdy78"]
+[gd_scene load_steps=12 format=3 uid="uid://4wyp7nqsdy78"]
 
 [ext_resource type="Script" path="res://Scripts/world.gd" id="1_1qimx"]
 [ext_resource type="TileSet" uid="uid://c4a4rly5hit4v" path="res://Art/groundtile.tres" id="2_u0u42"]
 [ext_resource type="Script" path="res://Scripts/GroundMap.gd" id="3_jo3dm"]
 [ext_resource type="PackedScene" uid="uid://cpgmiqogs81qn" path="res://Scenes/occupiedMarker.tscn" id="4_6iuac"]
 [ext_resource type="Script" path="res://Scripts/CameraMovement.gd" id="5_a3pr1"]
-[ext_resource type="Script" path="res://Scenes/createburds.gd" id="6_t6q0k"]
-[ext_resource type="PackedScene" uid="uid://bxi4qmg030kgy" path="res://Scenes/Organism.tscn" id="7_n88gs"]
+[ext_resource type="PackedScene" uid="uid://y3y18b32q3mi" path="res://Scenes/BurdHandler.tscn" id="6_tp6a8"]
 [ext_resource type="Script" path="res://Scenes/CreateBushes.gd" id="8_e63mr"]
 [ext_resource type="PackedScene" uid="uid://b61pb34u8x8dd" path="res://Scenes/BurdUI.tscn" id="8_r1kuv"]
-[ext_resource type="PackedScene" uid="uid://ctvjgfjj1yhmh" path="res://BerryBush.tscn" id="9_piq5v"]
+[ext_resource type="PackedScene" uid="uid://ctvjgfjj1yhmh" path="res://Scenes/BerryBush.tscn" id="9_piq5v"]
 
 [sub_resource type="Gradient" id="Gradient_3ymuv"]
 colors = PackedColorArray(0.0470588, 0.282353, 1, 1, 0.0470588, 0.282353, 1, 1)
@@ -39,10 +38,7 @@ script = ExtResource("5_a3pr1")
 
 [node name="TileTimers" type="Node" parent="."]
 
-[node name="birds" type="Node" parent="."]
-script = ExtResource("6_t6q0k")
-burdScene = ExtResource("7_n88gs")
-desiredNumber = 5
+[node name="birds" parent="." instance=ExtResource("6_tp6a8")]
 
 [node name="Bushes" type="Node" parent="."]
 script = ExtResource("8_e63mr")

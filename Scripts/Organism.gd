@@ -22,9 +22,9 @@ var shouldHide = false
 var isHiding = false
 
 var genotypes = {
-		"BB" = Color.DARK_GREEN,
-		"Bb" = Color.DARK_GREEN,
-		"bb" = Color.WHITE
+		"XX" = Color.WHITE,
+		"Xx" = Color.WHITE,
+		"xx" = Color.DARK_GREEN
 	}
 	
 var visRate = 100.0
@@ -175,8 +175,8 @@ func createChild(pos, otherParent): #really really really should clean this up a
 		mutate(child, child.genotype)
 		
 	
-	if child.genotype == "bB":
-		child.genotype = "Bb"
+	if child.genotype == "xX":
+		child.genotype = "Xx"
 	
 	get_parent().add_child(child)
 	$BebeCooldown.start()
@@ -235,7 +235,7 @@ func roam_func():
 				heal()
 		
 		if canBreed: # BREEDING
-			if lookAtTile.is_colliding() and (hunger >= maxHunger * 0.45) and lookAtTile.get_collider().get_parent() is burd:
+			if lookAtTile.get_collider() != null and (hunger >= maxHunger * 0.45) and lookAtTile.get_collider().get_parent() is burd:
 				var childTile = null
 				
 				for childPos in possibleMoves:

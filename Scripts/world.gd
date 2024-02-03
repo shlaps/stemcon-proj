@@ -68,7 +68,6 @@ func on_tile_grow(tileTimer, tile_pos):
 func _ready() -> void:	
 	sky.visible = true
 	dayTimer.wait_time = times[currentTime]
-	print(times[currentTime])
 	sky.modulate = timeColor[currentTime]
 	dayTimer.start()
 	#grow timer setup
@@ -102,10 +101,14 @@ func _physics_process(_delta: float) -> void:
 	elif Input.is_action_just_pressed("set_speed_one"):
 		Engine.time_scale -= 1
 
+var dayCounter = 0
+
 func _on_day_timer_timeout() -> void:
 	currentTime += 1
 	if currentTime > 2:
 		currentTime = 0
+		dayCounter += 1
+		print("|| DAY ", dayCounter, " ||")
 	
 	sky.modulate = timeColor[currentTime]
 	dayTimer.wait_time = times[currentTime]

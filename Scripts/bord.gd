@@ -41,7 +41,6 @@ func hunt():
 		
 		if randf_range(0, 100) >= chance:
 			burdTarget.die()
-			print("killing ", burdTarget.name, burdTarget.visRate)
 			
 	
 func toggleBordVisibility(val):

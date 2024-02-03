@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=3 uid="uid://y3y18b32q3mi"]
+
+[ext_resource type="Script" path="res://Scenes/createburds.gd" id="1_q2di7"]
+[ext_resource type="PackedScene" uid="uid://bxi4qmg030kgy" path="res://Scenes/Organism.tscn" id="2_fbvcj"]
+
+[node name="birds" type="Node"]
+script = ExtResource("1_q2di7")
+burdScene = ExtResource("2_fbvcj")
+desiredNumber = 5
+
+[node name="DataCollectionTimer" type="Timer" parent="."]
+wait_time = 60.0
+autostart = true
+
+[connection signal="timeout" from="DataCollectionTimer" to="." method="_on_data_collection_timer_timeout"]

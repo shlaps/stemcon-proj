@@ -2,8 +2,24 @@ extends Node
 @export var burdScene : PackedScene 
 @export var desiredNumber : int = 100
 
+var minute = 0
+
 
 @onready var TileMapObj =  $"/root/World/TileMap" as TileMap
+
+func collectData():
+	var freqXX = 0
+	var freqXx= 0
+	var freqxx = 0
+	for i in get_children(): # this is bad but i have less than a day to do this + data anylysis so i dont care
+		if i is Timer: continue
+		if i.genotype == "XX":
+			freqXX += 1
+		elif  i.genotype == "Xx":
+			freqXx += 1
+		else:
+			freqxx += 1
+	print("Minute: " , minute, " || Amount XX: ", freqXX, " Amount Xx: ", freqXx, " Amount xx: ", freqxx)
 
 func _ready() -> void:	
 	var currentNumber = 0
@@ -24,3 +40,11 @@ func _ready() -> void:
 		currentNumber += 1
 		if currentNumber >= desiredNumber:
 			break
+	print("|| DAY 0 ||")
+	collectData()
+	
+
+
+func _on_data_collection_timer_timeout() -> void:
+	minute += 1
+	collectData()

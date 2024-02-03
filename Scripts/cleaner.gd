@@ -1,7 +1,13 @@
 extends Node
 
-@onready var TileMapObj = get_parent().get_parent().get_node("TileMap")
+@onready var TileMapObj = $"/root/World/TileMap"
 @onready var Area = $Area2D
+
+@export var timeToNextClean = 400
+
+func _ready() -> void:
+	$Timer.wait_time = timeToNextClean
+	$Timer.start()
 
 var tile_coords = [
 	Vector2(1,1),
@@ -24,6 +30,5 @@ func _on_timer_timeout() -> void: # we shoulddd just fix whatever bug is causing
 		Area.position = tile_pos
 		await get_tree().create_timer(0.03).timeout
 		if Area.get_overlapping_areas().is_empty() and not isWall and isColliding:
-			print("cleaning")
 			TileMapObj.set_cell(0, i, 1, tile_coords[vegetationLevel])
 	$Timer.start()
