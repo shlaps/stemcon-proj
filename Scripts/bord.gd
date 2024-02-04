@@ -37,7 +37,7 @@ func hunt():
 		var chance = 0.0
 		
 		if burdTarget.isHiding:
-			chance = burdTarget.visRate
+			chance = burdTarget.visRate # lower is worse
 		
 		if randf_range(0, 100) >= chance:
 			burdTarget.die()
