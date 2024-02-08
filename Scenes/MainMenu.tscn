@@ -1,0 +1,287 @@
+[gd_scene load_steps=16 format=3 uid="uid://bxiej4vm1plc1"]
+
+[ext_resource type="Script" path="res://Scripts/SpawnBurdModel.gd" id="1_8prhy"]
+[ext_resource type="PackedScene" uid="uid://bcpg1147s1r06" path="res://Scenes/MainMenuBurd.tscn" id="2_uxbg3"]
+[ext_resource type="Script" path="res://Scripts/UI.gd" id="3_shs8s"]
+[ext_resource type="PackedScene" uid="uid://dbl7pixg3yfsl" path="res://Scenes/world1.tscn" id="4_4o01x"]
+[ext_resource type="FontFile" uid="uid://csk6pf314d0ot" path="res://Art/one-of-a-kind-lite-edition.rg.ttf" id="5_r0gh5"]
+[ext_resource type="Texture2D" uid="uid://bycxev4sx2h8e" path="res://Art/menuburd1.png" id="6_hbsbc"]
+[ext_resource type="Texture2D" uid="uid://vfjows14k64j" path="res://Art/menuburd2.png" id="7_230s7"]
+[ext_resource type="AudioStream" uid="uid://c87bk4tw8vx8c" path="res://Art/awful.wav" id="8_posfn"]
+[ext_resource type="Script" path="res://Scripts/repeatAudio.gd" id="9_rkoa7"]
+
+[sub_resource type="Sky" id="Sky_vw0b4"]
+
+[sub_resource type="Environment" id="Environment_rgxca"]
+background_mode = 1
+background_color = Color(0.101961, 0.337255, 1, 1)
+sky = SubResource("Sky_vw0b4")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_w4urf"]
+size = Vector3(50, 0.2, 50)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tfx0u"]
+albedo_color = Color(0.266667, 0.266667, 0.266667, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_fx3t1"]
+material = SubResource("StandardMaterial3D_tfx0u")
+size = Vector3(50, 0.2, 50)
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p2ofy"]
+
+[node name="TitleWorld" type="Node3D"]
+script = ExtResource("1_8prhy")
+burdModel = ExtResource("2_uxbg3")
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.868519, 0.495656, 0, -0.495656, 0.868519, -0.0554615, 4.00651, 10.7878)
+environment = SubResource("Environment_rgxca")
+fov = 58.0433
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.833056, 0.553188, 0, -0.553188, 0.833056, 0, 0, 0)
+light_color = Color(0.635294, 0.635294, 0.635294, 1)
+light_energy = 0.39
+
+[node name="Terrain" type="Node" parent="."]
+
+[node name="Ground" type="StaticBody3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.4382, -0.118357, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground"]
+shape = SubResource("BoxShape3D_w4urf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain/Ground"]
+mesh = SubResource("BoxMesh_fx3t1")
+
+[node name="Ground2" type="StaticBody3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 29.2572, -0.118357, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground2"]
+shape = SubResource("BoxShape3D_w4urf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain/Ground2"]
+mesh = SubResource("BoxMesh_fx3t1")
+
+[node name="Ground3" type="StaticBody3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22437, -0.118357, -25.3485)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground3"]
+shape = SubResource("BoxShape3D_w4urf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain/Ground3"]
+mesh = SubResource("BoxMesh_fx3t1")
+
+[node name="Ground4" type="StaticBody3D" parent="Terrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.22437, -0.118357, 33.3595)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Terrain/Ground4"]
+shape = SubResource("BoxShape3D_w4urf")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain/Ground4"]
+mesh = SubResource("BoxMesh_fx3t1")
+
+[node name="BackWall" type="MeshInstance3D" parent="Terrain"]
+transform = Transform3D(4.3052, 0, 0, 0, 0.0584875, -0.998288, 0, 0.998288, 0.0584875, 7.22437, -0.118357, -25.3485)
+mesh = SubResource("BoxMesh_fx3t1")
+skeleton = NodePath("")
+
+[node name="Tunnel" type="Node" parent="Terrain"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Terrain/Tunnel"]
+transform = Transform3D(0.200473, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.133867, -25.0219, -0.457064)
+mesh = SubResource("BoxMesh_fx3t1")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="Terrain/Tunnel"]
+transform = Transform3D(0.200473, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, -0.131461, -25.1005, 8.48468)
+mesh = SubResource("BoxMesh_fx3t1")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="Terrain/Tunnel"]
+transform = Transform3D(-1.22978e-08, 1, -4.37114e-08, 0, -4.37114e-08, -1, -0.281341, -4.37114e-08, 1.91069e-15, -4.53514, -25.1005, 4.83903)
+mesh = SubResource("BoxMesh_fx3t1")
+skeleton = NodePath("")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="Terrain/Tunnel"]
+transform = Transform3D(-8.76295e-09, 1, -4.37114e-08, 0, -4.37114e-08, -1, -0.200473, -4.37114e-08, 1.91069e-15, 4.358, -25.0484, 4.54635)
+mesh = SubResource("BoxMesh_fx3t1")
+skeleton = NodePath("")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="Terrain/Tunnel"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.765079, -5.07215, 4.24265)
+light_color = Color(0.788235, 0, 0.172549, 1)
+light_energy = 1.458
+omni_range = 21.61
+omni_attenuation = 0.0346742
+
+[node name="Marker3D" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.10371, 4.2933)
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="UI" type="CanvasLayer" parent="."]
+script = ExtResource("3_shs8s")
+newScene = ExtResource("4_4o01x")
+
+[node name="Menu" type="Control" parent="UI"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Title" type="RichTextLabel" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 16.0
+offset_right = 1137.0
+offset_bottom = 118.0
+pivot_offset = Vector2(500, 50)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_fonts/normal_font = ExtResource("5_r0gh5")
+theme_override_font_sizes/normal_font_size = 100
+text = "Burdtastic simulator"
+scroll_active = false
+
+[node name="MenuBurd" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 991.0
+offset_top = 45.0
+offset_right = 1141.0
+offset_bottom = 195.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd"]
+layout_mode = 0
+offset_left = -39.0
+offset_top = -27.0
+offset_right = 211.0
+offset_bottom = 173.0
+rotation = 0.436332
+pivot_offset = Vector2(125, 100)
+texture = ExtResource("6_hbsbc")
+expand_mode = 1
+flip_h = true
+
+[node name="MenuBurd2" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = -18.0
+offset_top = 29.0
+offset_right = 132.0
+offset_bottom = 179.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd2"]
+layout_mode = 0
+offset_left = -33.0
+offset_top = -13.0
+offset_right = 217.0
+offset_bottom = 187.0
+rotation = -0.436332
+pivot_offset = Vector2(125, 100)
+texture = ExtResource("7_230s7")
+expand_mode = 1
+
+[node name="StartButton" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 250.0
+offset_right = 700.0
+offset_bottom = 310.0
+pivot_offset = Vector2(100, 30)
+text = "Start"
+
+[node name="Credits" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 350.0
+offset_right = 700.0
+offset_bottom = 410.0
+pivot_offset = Vector2(100, 30)
+text = "Credits"
+
+[node name="Quit" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 500.0
+offset_top = 450.0
+offset_right = 700.0
+offset_bottom = 510.0
+pivot_offset = Vector2(100, 30)
+text = "Exit"
+
+[node name="Credits" type="Control" parent="UI"]
+visible = false
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="CreditHeader" type="RichTextLabel" parent="UI/Credits"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = 16.0
+offset_right = 1137.0
+offset_bottom = 118.0
+pivot_offset = Vector2(500, 50)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_fonts/normal_font = ExtResource("5_r0gh5")
+theme_override_font_sizes/normal_font_size = 100
+text = "Credits"
+scroll_active = false
+
+[node name="Credits" type="RichTextLabel" parent="UI/Credits"]
+layout_mode = 0
+offset_left = 36.0
+offset_top = 140.0
+offset_right = 1136.0
+offset_bottom = 640.0
+pivot_offset = Vector2(500, 50)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_font_sizes/normal_font_size = 50
+text = "DEVELOPER: (Unsure if i can put my name on here while its at STEMCON)
+
+my bestest buddy Loren for making the bird art you see in the menu
+
+and godot :)"
+scroll_active = false
+
+[node name="BackButton" type="Button" parent="UI/Credits"]
+layout_mode = 0
+offset_left = 928.0
+offset_top = 576.0
+offset_right = 1128.0
+offset_bottom = 636.0
+pivot_offset = Vector2(100, 30)
+text = "Back"
+
+[node name="Timer" type="Timer" parent="UI"]
+wait_time = 0.5
+autostart = true
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.52944, 9.21789, 3.2794)
+stream = ExtResource("8_posfn")
+volume_db = 4.324
+max_db = 0.838
+autoplay = true
+max_distance = 4096.0
+script = ExtResource("9_rkoa7")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[connection signal="pressed" from="UI/Menu/StartButton" to="UI" method="_on_start_button_pressed"]
+[connection signal="pressed" from="UI/Menu/Credits" to="UI" method="_on_credits_pressed"]
+[connection signal="pressed" from="UI/Menu/Quit" to="UI" method="_on_quit_pressed"]
+[connection signal="pressed" from="UI/Credits/BackButton" to="UI" method="_on_back_button_pressed"]
+[connection signal="timeout" from="UI/Timer" to="UI" method="_on_timer_timeout"]
+[connection signal="finished" from="AudioStreamPlayer3D" to="AudioStreamPlayer3D" method="_on_finished"]
