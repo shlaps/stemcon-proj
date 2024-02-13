@@ -1,12 +1,11 @@
-[gd_scene load_steps=13 format=3 uid="uid://bcpg1147s1r06"]
+[gd_scene load_steps=12 format=3 uid="uid://bcpg1147s1r06"]
 
 [ext_resource type="Script" path="res://Scripts/MainMenuBurd.gd" id="1_tumm6"]
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_knqh2"]
-albedo_color = Color(0.427451, 0.360784, 0.141176, 1)
+[ext_resource type="Material" uid="uid://cyb26tj58j76l" path="res://3DburdBodyColor.tres" id="2_sx470"]
 
 [sub_resource type="SphereMesh" id="SphereMesh_v3eyp"]
-material = SubResource("StandardMaterial3D_knqh2")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ox3vf"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ygdih"]
 albedo_color = Color(0, 0, 0, 1)
@@ -19,12 +18,6 @@ albedo_color = Color(0.870588, 0.866667, 0, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_y2bge"]
 material = SubResource("StandardMaterial3D_cn6iu")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2g1ow"]
-albedo_color = Color(0.427451, 0.360784, 0.141176, 1)
-
-[sub_resource type="BoxMesh" id="BoxMesh_ox3vf"]
-material = SubResource("StandardMaterial3D_2g1ow")
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ed10r"]
 albedo_color = Color(1, 1, 0.145098, 1)
@@ -41,40 +34,59 @@ mass = 20.0
 gravity_scale = 0.5
 script = ExtResource("1_tumm6")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
-mesh = SubResource("SphereMesh_v3eyp")
+[node name="Colorers" type="Node3D" parent="."]
 
-[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.457905, 0.390949)
+[node name="Body" type="MeshInstance3D" parent="Colorers"]
+layers = 524288
+material_override = ExtResource("2_sx470")
 mesh = SubResource("SphereMesh_v3eyp")
+skeleton = NodePath("../..")
+
+[node name="Head" type="MeshInstance3D" parent="Colorers"]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.457905, 0.390949)
+layers = 524288
+material_override = ExtResource("2_sx470")
+mesh = SubResource("SphereMesh_v3eyp")
+skeleton = NodePath("../..")
+
+[node name="LegR" type="MeshInstance3D" parent="Colorers"]
+transform = Transform3D(0.181973, 0, 0, 0, 1, 0, 0, 0, 0.146664, -0.317541, -0.641057, -0.112339)
+layers = 524288
+material_override = ExtResource("2_sx470")
+mesh = SubResource("BoxMesh_ox3vf")
+skeleton = NodePath("../..")
+
+[node name="LegL" type="MeshInstance3D" parent="Colorers"]
+transform = Transform3D(0.181973, 0, 0, 0, 1, 0, 0, 0, 0.146664, 0.289562, -0.641057, -0.112296)
+layers = 524288
+material_override = ExtResource("2_sx470")
+mesh = SubResource("BoxMesh_ox3vf")
+skeleton = NodePath("../..")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, -0.112175, 0.457905, 0.592279)
+layers = 524288
 mesh = SubResource("SphereMesh_jujrj")
 
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 0.1, 0.108718, 0.457905, 0.592279)
+layers = 524288
 mesh = SubResource("SphereMesh_jujrj")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.252, 0, 0, 0, 0.24, 0, 0, 0, 0.875, -0.314809, -1.139, 0.0980197)
+layers = 524288
 mesh = SubResource("SphereMesh_y2bge")
 
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.252, 0, 0, 0, 0.24, 0, 0, 0, 0.875, 0.286515, -1.139, 0.0980197)
+layers = 524288
 mesh = SubResource("SphereMesh_y2bge")
-
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.181973, 0, 0, 0, 1, 0, 0, 0, 0.146664, -0.317541, -0.641057, -0.112339)
-mesh = SubResource("BoxMesh_ox3vf")
 
 [node name="MeshInstance3D7" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.385863, 0.0263503, 0, -0.105401, 0.0964659, -0.00327621, 0.178503, 0.617027)
+layers = 524288
 mesh = SubResource("BoxMesh_deofr")
-
-[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
-transform = Transform3D(0.181973, 0, 0, 0, 1, 0, 0, 0, 0.146664, 0.289562, -0.641057, -0.112296)
-mesh = SubResource("BoxMesh_ox3vf")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.345614, 0.0412339)

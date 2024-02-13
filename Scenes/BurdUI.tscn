@@ -1,55 +1,196 @@
-[gd_scene load_steps=3 format=3 uid="uid://b61pb34u8x8dd"]
+[gd_scene load_steps=10 format=3 uid="uid://b61pb34u8x8dd"]
 
 [ext_resource type="Script" path="res://Scripts/OrganismClicked.gd" id="1_sbpj5"]
-[ext_resource type="Script" path="res://Scripts/birdcount.gd" id="2_xfpa6"]
+[ext_resource type="Texture2D" uid="uid://dyqbr4lha3gg" path="res://Art/counter_ui.png" id="2_fwdtr"]
+[ext_resource type="Texture2D" uid="uid://jcf5r4kfgprh" path="res://Art/button_1.png" id="2_g6ux6"]
+[ext_resource type="Theme" uid="uid://legmsqjj1vtc" path="res://Art/BurdUI.tres" id="3_2ffek"]
+[ext_resource type="Texture2D" uid="uid://qnr1dpe5ls3m" path="res://Art/panel_rect.png" id="3_g8jrj"]
+[ext_resource type="Texture2D" uid="uid://brh5ubnj8tura" path="res://Art/button_1p.png" id="3_gd4i2"]
+[ext_resource type="Script" path="res://Scripts/ImageButtonOffset.gd" id="5_8e0gl"]
+[ext_resource type="Texture2D" uid="uid://c5n26tn2qllrw" path="res://Art/panel_sq.png" id="5_ciy80"]
+[ext_resource type="PackedScene" uid="uid://c2vo8lendafui" path="res://Scenes/burd_preview.tscn" id="6_8hxs0"]
 
 [node name="BurdUI" type="CanvasLayer"]
 script = ExtResource("1_sbpj5")
+burdPreviewScene = ExtResource("6_8hxs0")
 
-[node name="BurdInfo" type="Control" parent="."]
+[node name="BirdCounter" type="Control" parent="."]
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
-scale = Vector2(0.314441, 0.0964529)
+theme = ExtResource("3_2ffek")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="BurdInfo"]
+[node name="Backdrop" type="Control" parent="BirdCounter"]
+anchors_preset = 0
+offset_left = -27.0
+offset_top = 6.0
+offset_right = 13.0
+offset_bottom = 46.0
+
+[node name="TextureRect" type="TextureRect" parent="BirdCounter/Backdrop"]
+texture_filter = 1
 layout_mode = 0
-offset_right = 223.0
-offset_bottom = 73.0
-scale = Vector2(6.27693, 12.433)
-text = "heyyy
+offset_left = 1053.0
+offset_top = -2.0
+offset_right = 1093.0
+offset_bottom = 38.0
+scale = Vector2(1, 1.25)
+texture = ExtResource("2_fwdtr")
+
+[node name="TextureRect2" type="TextureRect" parent="BirdCounter/Backdrop"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1133.0
+offset_top = -2.0
+offset_right = 1173.0
+offset_bottom = 38.0
+scale = Vector2(1, 1.25)
+texture = ExtResource("2_fwdtr")
+
+[node name="TextureRect3" type="TextureRect" parent="BirdCounter/Backdrop"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 1093.0
+offset_top = -2.0
+offset_right = 1133.0
+offset_bottom = 38.0
+scale = Vector2(1, 1.25)
+texture = ExtResource("2_fwdtr")
+
+[node name="Counters" type="Control" parent="BirdCounter"]
+anchors_preset = 0
+offset_left = -27.0
+offset_top = 6.0
+offset_right = 13.0
+offset_bottom = 46.0
+
+[node name="Count1" type="RichTextLabel" parent="BirdCounter/Counters"]
+layout_mode = 0
+offset_left = 1068.0
+offset_top = 7.0
+offset_right = 1084.0
+offset_bottom = 47.0
+text = "1
+"
+fit_content = true
+scroll_active = false
+
+[node name="Count2" type="RichTextLabel" parent="BirdCounter/Counters"]
+layout_mode = 0
+offset_left = 1108.0
+offset_top = 7.0
+offset_right = 1124.0
+offset_bottom = 47.0
+text = "1
+"
+fit_content = true
+scroll_active = false
+
+[node name="Count3" type="RichTextLabel" parent="BirdCounter/Counters"]
+layout_mode = 0
+offset_left = 1148.0
+offset_top = 7.0
+offset_right = 1164.0
+offset_bottom = 47.0
+text = "1
+"
+fit_content = true
+scroll_active = false
+
+[node name="ForceUpdate" type="Timer" parent="BirdCounter"]
+wait_time = 10.0
+autostart = true
+
+[node name="BurdInfo" type="Control" parent="."]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_left = 2.0
+offset_right = 2.0
+theme = ExtResource("3_2ffek")
+
+[node name="TextureRect4" type="TextureRect" parent="BurdInfo"]
+texture_filter = 1
+layout_mode = 0
+offset_left = 298.0
+offset_top = 514.0
+offset_right = 586.0
+offset_bottom = 578.0
+scale = Vector2(2, 2)
+texture = ExtResource("3_g8jrj")
+
+[node name="TextureRect5" type="TextureRect" parent="BurdInfo"]
+layout_mode = 0
+offset_left = 784.0
+offset_top = 555.0
+offset_right = 880.0
+offset_bottom = 651.0
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("5_ciy80")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="BurdInfo"]
+layout_mode = 0
+offset_left = 789.0
+offset_top = 560.0
+offset_right = 1301.0
+offset_bottom = 1072.0
+scale = Vector2(0.12, 0.12)
+
+[node name="SubViewport" type="SubViewport" parent="BurdInfo/SubViewportContainer"]
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="Button" type="TextureButton" parent="BurdInfo"]
+layout_mode = 0
+offset_left = 307.0
+offset_top = 522.0
+offset_right = 403.0
+offset_bottom = 554.0
+mouse_filter = 1
+texture_normal = ExtResource("2_g6ux6")
+texture_pressed = ExtResource("3_gd4i2")
+stretch_mode = 0
+script = ExtResource("5_8e0gl")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="BurdInfo/Button"]
+layout_mode = 0
+offset_left = 14.0
+offset_top = -3.99997
+offset_right = 84.0
+offset_bottom = 26.0
+mouse_filter = 1
+text = "close"
+fit_content = true
+scroll_active = false
+metadata/_edit_lock_ = true
+
+[node name="Name" type="RichTextLabel" parent="BurdInfo"]
+layout_mode = 0
+offset_left = 778.0
+offset_top = 520.0
+offset_right = 860.0
+offset_bottom = 552.0
+theme_override_font_sizes/normal_font_size = 32
+text = "burd32
 "
 fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Button" type="Button" parent="BurdInfo"]
+[node name="Info" type="RichTextLabel" parent="BurdInfo"]
 layout_mode = 0
-offset_left = 25.0
-offset_top = 912.0
-offset_right = 550.0
-offset_bottom = 1576.0
-theme_override_font_sizes/font_size = 200
-text = "Close"
+offset_left = 312.0
+offset_top = 567.0
+offset_right = 488.0
+offset_bottom = 599.0
+theme_override_font_sizes/normal_font_size = 32
+text = "R:XX G:Xx B:xx"
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
 
-[node name="birdcount" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-scale = Vector2(0.314441, 0.0964529)
-script = ExtResource("2_xfpa6")
-
-[node name="RichTextLabel" type="RichTextLabel" parent="birdcount"]
-layout_mode = 0
-offset_left = 3129.36
-offset_top = 248.826
-offset_right = 3229.36
-offset_bottom = 288.826
-scale = Vector2(6.27693, 12.433)
-text = "birds: 0
-"
-
-[node name="ForceUpdate" type="Timer" parent="birdcount"]
-wait_time = 10.0
-autostart = true
-
+[connection signal="timeout" from="BirdCounter/ForceUpdate" to="BirdCounter" method="_on_force_update_timeout"]
+[connection signal="button_down" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_button_down"]
+[connection signal="button_up" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_button_up"]
+[connection signal="mouse_exited" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_mouse_exited"]
 [connection signal="pressed" from="BurdInfo/Button" to="." method="_on_button_pressed"]
-[connection signal="timeout" from="birdcount/ForceUpdate" to="birdcount" method="_on_force_update_timeout"]

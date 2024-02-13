@@ -3,19 +3,101 @@ extends CanvasLayer
 @onready var birds = WorldNode.find_child("birds") as Node
 
 @onready var BurdInfo = $BurdInfo as Control
-@onready var BurdText = $BurdInfo/RichTextLabel as RichTextLabel
+@onready var BurdText = $BurdInfo/Info
+@onready var counters = $BirdCounter/Counters as Control
 
-func gotClicked(obj : burd):
-	BurdText.text = str(obj.name, "'s genotype: ", obj.genotype)
-	BurdInfo.visible = true
+@export var burdPreviewScene : PackedScene
+@onready var subViewport = $BurdInfo/SubViewportContainer/SubViewport
+
+
+#birdcount stuff
+var burdCount = 0
+@onready var burdContainer = $"/root/World/birds"
+
+
+func seperateNumbers(num :int):
+	var numString = str(num)
+	var returnTable = []
+	if numString.length() < 3:
+		numString = str("0", numString)
+	elif numString.length() > 3:
+		returnTable = ["?", "?", "?"]
+		return returnTable
+	
+	for i in numString.length():
+		returnTable.append(numString[i])
+	return returnTable
+
+func updateBurdCount(): #changes text to match that of the population
+	var popCount = seperateNumbers(burdCount)
+	var maxNumber = popCount.size()
+	var count = 0
+	print(popCount)
+	for i : RichTextLabel in counters.get_children():
+		if count >= maxNumber:
+			i.text = "0"
+			continue
+		
+		i.text = popCount[count]
+		count += 1
+
+func addBird(node: Node) -> void: #on child add of burd node in world scene
+	if node is burd:
+		burdCount += 1
+		updateBurdCount()
+
+func _on_force_update_timeout() -> void: # fix any desycns, if they occur
+	var count = 0
+	for i in burdContainer.get_children():
+		count += 1
+	burdCount = count
+	updateBurdCount()
+
+
+func removeBird(node: Node) -> void: # on child remove of burd node in world scene
+	if node is burd:
+		burdCount -= 1
+		updateBurdCount()
 
 func _ready() -> void:
+	burdContainer.connect("child_entered_tree", Callable(self, "addBird"))
+	burdContainer.connect("child_exiting_tree", Callable(self, "removeBird"))
+	_on_force_update_timeout()
+	#end of bird count
+	
 	for node in birds.get_children():
 		connectBurd(node)
 	
 	birds.connect("child_entered_tree", Callable(self, "connectBurd"))
 	BurdInfo.visible = false
 	visible = true
+	
+func lerpPosition(obj, target, dur = 1.0, start = null):
+	var t = 0.0
+	if start:
+		obj.position = start
+	
+	while t < 1.0:
+		obj.position = lerp(obj.position, target, t)
+		t += get_process_delta_time() / dur
+		await(get_tree().create_timer(get_process_delta_time()).timeout)
+		
+		if obj.position.distance_to(target) <= 1:
+			break
+			
+	obj.position = target
+
+
+func gotClicked(obj : burd): # update burd info window on clicking an organism
+	BurdText.text = str(obj.name, "'s genotype: ", obj.genotype)
+	BurdInfo.visible = true
+	for i in subViewport.get_children():
+		i.queue_free()
+	var newPreviewScene = burdPreviewScene.instantiate() 
+	subViewport.add_child(newPreviewScene)
+	newPreviewScene.customizeBurd(obj.genotypes.get(obj.genotype))
+	
+	
 
 func connectBurd(node: Node) -> void:
 	if node is burd:

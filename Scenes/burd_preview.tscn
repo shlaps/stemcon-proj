@@ -1,0 +1,56 @@
+[gd_scene load_steps=6 format=3 uid="uid://c2vo8lendafui"]
+
+[ext_resource type="PackedScene" uid="uid://bcpg1147s1r06" path="res://Scenes/MainMenuBurd.tscn" id="1_hldqe"]
+[ext_resource type="Script" path="res://Scenes/burd_preview.gd" id="1_jfr1l"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8ra8s"]
+albedo_color = Color(0.141176, 0.52549, 0.188235, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_5o6e5"]
+size = Vector3(50, 0.5, 50)
+
+[sub_resource type="Environment" id="Environment_f3i0k"]
+background_mode = 1
+background_color = Color(0.129412, 0.364706, 1, 1)
+background_energy_multiplier = 0.75
+ambient_light_source = 3
+ambient_light_color = Color(0.756863, 0.756863, 0.756863, 1)
+ambient_light_sky_contribution = 0.74
+glow_enabled = true
+fog_enabled = true
+fog_light_color = Color(0.364706, 0.396078, 0.443137, 1)
+fog_light_energy = 0.75
+fog_density = 0.0494
+
+[node name="BurdPreview" type="Node3D"]
+script = ExtResource("1_jfr1l")
+
+[node name="3DBURD" parent="." instance=ExtResource("1_hldqe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+gravity_scale = 0.0
+constant_torque = Vector3(1, 1, 1)
+shouldDestroy = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.302039, 0)
+layers = 524288
+material_override = SubResource("StandardMaterial3D_8ra8s")
+mesh = SubResource("BoxMesh_5o6e5")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.623184, 0.252592, -0.740162, 0, 0.946407, 0.322976, 0.782075, -0.201273, 0.589786, 0, 0, 0)
+layers = 524288
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.257, 2.459)
+cull_mask = 524288
+fov = 59.0498
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_f3i0k")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 1.5
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

@@ -1,0 +1,7 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://legmsqjj1vtc"]
+
+[ext_resource type="FontFile" uid="uid://1n0pac2evp7" path="res://Art/rainyhearts.ttf" id="1_gdo0f"]
+
+[resource]
+RichTextLabel/font_sizes/normal_font_size = 32
+RichTextLabel/fonts/normal_font = ExtResource("1_gdo0f")

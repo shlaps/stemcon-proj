@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cpgmiqogs81qn" path="res://Scenes/occupiedMarker.tscn" id="4_6iuac"]
 [ext_resource type="Script" path="res://Scripts/CameraMovement.gd" id="5_a3pr1"]
 [ext_resource type="PackedScene" uid="uid://y3y18b32q3mi" path="res://Scenes/BurdHandler.tscn" id="6_tp6a8"]
-[ext_resource type="Script" path="res://Scenes/CreateBushes.gd" id="8_e63mr"]
+[ext_resource type="Script" path="res://Scripts/CreateBushes.gd" id="8_e63mr"]
 [ext_resource type="PackedScene" uid="uid://b61pb34u8x8dd" path="res://Scenes/BurdUI.tscn" id="8_r1kuv"]
 [ext_resource type="PackedScene" uid="uid://ctvjgfjj1yhmh" path="res://Scenes/BerryBush.tscn" id="9_piq5v"]
 

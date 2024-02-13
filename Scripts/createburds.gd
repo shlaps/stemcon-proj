@@ -48,3 +48,17 @@ func _ready() -> void:
 func _on_data_collection_timer_timeout() -> void:
 	minute += 1
 	collectData()
+
+var pop = 0
+@export var popCap = 1000
+func _on_child_entered_tree(node: Node) -> void:
+	if node is burd:
+		pop += 1
+		if pop >= popCap:
+			await node._ready()
+			node.die()
+
+
+func _on_child_exiting_tree(node: Node) -> void:
+	if node is burd:
+		pop -= 1
