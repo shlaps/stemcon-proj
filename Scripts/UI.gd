@@ -61,19 +61,18 @@ func _ready() -> void:
 	menuBurd2.connect("mouse_exited", Callable(self, "mouseExit").bind(menuBurd2))
 
 
-func _on_start_button_pressed() -> void:
-	get_tree().change_scene_to_packed(newScene)
-
-
-func _on_quit_pressed() -> void:
-	get_tree().quit()
-
-
-func _on_back_button_pressed() -> void:
-	$Credits.visible = false
-	$Menu.visible = true
-
 
 func _on_credits_pressed() -> void:
 	$Credits.visible = true
 	$Menu.visible = false
+
+
+func _on_start_pressed() -> void:
+	get_tree().change_scene_to_packed(newScene)
+
+func _on_quit_pressed() -> void:
+	get_tree().quit()
+
+func _on_back_button_2_pressed() -> void:
+	$Credits.visible = false
+	$Menu.visible = true

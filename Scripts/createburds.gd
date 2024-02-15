@@ -23,6 +23,7 @@ func collectData():
 
 func _ready() -> void:	
 	var currentNumber = 0
+	
 	var tileTable = TileMapObj.get_used_cells(0).duplicate()
 	tileTable.shuffle()
 	

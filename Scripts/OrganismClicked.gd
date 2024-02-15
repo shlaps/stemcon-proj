@@ -3,17 +3,20 @@ extends CanvasLayer
 @onready var birds = WorldNode.find_child("birds") as Node
 
 @onready var BurdInfo = $BurdInfo as Control
-@onready var BurdText = $BurdInfo/Info
+@onready var BurdGenotypeText = $BurdInfo/Info
+@onready var BurdNameText = $BurdInfo/Name
+@onready var PauseMenu = $Menu
 @onready var counters = $BirdCounter/Counters as Control
 
 @export var burdPreviewScene : PackedScene
+@export var mainMenuScene : PackedScene
+
 @onready var subViewport = $BurdInfo/SubViewportContainer/SubViewport
 
 
 #birdcount stuff
 var burdCount = 0
 @onready var burdContainer = $"/root/World/birds"
-
 
 func seperateNumbers(num :int):
 	var numString = str(num)
@@ -28,11 +31,13 @@ func seperateNumbers(num :int):
 		returnTable.append(numString[i])
 	return returnTable
 
+func  _process(delta: float) -> void:
+	$BirdCounter/MenuButton.rotation += PI/180
+
 func updateBurdCount(): #changes text to match that of the population
 	var popCount = seperateNumbers(burdCount)
 	var maxNumber = popCount.size()
 	var count = 0
-	print(popCount)
 	for i : RichTextLabel in counters.get_children():
 		if count >= maxNumber:
 			i.text = "0"
@@ -89,13 +94,17 @@ func lerpPosition(obj, target, dur = 1.0, start = null):
 
 
 func gotClicked(obj : burd): # update burd info window on clicking an organism
-	BurdText.text = str(obj.name, "'s genotype: ", obj.genotype)
+	BurdGenotypeText.text = ""
+	for i in obj.genotype:
+		BurdGenotypeText.text = str(BurdGenotypeText.text, i)
+	BurdNameText.text = str(obj.name)
 	BurdInfo.visible = true
 	for i in subViewport.get_children():
 		i.queue_free()
 	var newPreviewScene = burdPreviewScene.instantiate() 
 	subViewport.add_child(newPreviewScene)
 	newPreviewScene.customizeBurd(obj.genotypes.get(obj.genotype))
+	lerpPosition(BurdInfo, Vector2(0, 0))
 	
 	
 
@@ -105,4 +114,46 @@ func connectBurd(node: Node) -> void:
 
 
 func _on_button_pressed() -> void:
+	await lerpPosition(BurdInfo, Vector2(0, 135))
 	BurdInfo.visible = false
+
+func _on_continue_pressed() -> void:
+	PauseMenu.visible = false
+	Engine.time_scale = 1
+
+func _on_quit_pressed() -> void:
+	print("!!!!!")
+	Engine.time_scale = 1
+	get_tree().change_scene_to_file("res://Scenes/MainMenu.tscn")
+	
+func _on_pause_pressed() -> void:
+	if Engine.time_scale > 1:
+		Engine.time_scale = 1
+	elif Engine.time_scale == 1:
+		Engine.time_scale = 0
+
+
+func _on_menu_button_pressed() -> void:
+	Engine.time_scale = 0
+	PauseMenu.visible = true
+
+func illegalAction(obj):
+	obj.modulate = Color.RED
+	await(get_tree().create_timer(.3).timeout)
+	obj.modulate = Color.WHITE
+	await(get_tree().create_timer(.3).timeout)
+	obj.modulate = Color.RED
+	await(get_tree().create_timer(.3).timeout)
+	obj.modulate = Color.WHITE
+
+
+func _on_speed_up_pressed() -> void:
+	if Engine.time_scale <= 4:
+		Engine.time_scale += 1
+	else:
+		illegalAction($BirdCounter/SpeedUp)
+
+
+func _on_speed_down_pressed() -> void:
+	if Engine.time_scale > 0:
+		Engine.time_scale -= 1

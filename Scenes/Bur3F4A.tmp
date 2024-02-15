@@ -6,10 +6,10 @@
 [ext_resource type="Theme" uid="uid://legmsqjj1vtc" path="res://Art/BurdUI.tres" id="3_2ffek"]
 [ext_resource type="Texture2D" uid="uid://qnr1dpe5ls3m" path="res://Art/panel_rect.png" id="3_g8jrj"]
 [ext_resource type="Texture2D" uid="uid://brh5ubnj8tura" path="res://Art/button_1p.png" id="3_gd4i2"]
-[ext_resource type="PackedScene" uid="uid://c2vo8lendafui" path="res://Scenes/burd_preview.tscn" id="3_wnq2m"]
 [ext_resource type="Texture2D" uid="uid://d13oe3225uw4b" path="res://Art/pause_ui.png" id="5_2down"]
 [ext_resource type="Script" path="res://Scripts/ImageButtonOffset.gd" id="5_8e0gl"]
 [ext_resource type="Texture2D" uid="uid://c5n26tn2qllrw" path="res://Art/panel_sq.png" id="5_ciy80"]
+[ext_resource type="PackedScene" uid="uid://c2vo8lendafui" path="res://Scenes/burd_preview.tscn" id="6_8hxs0"]
 [ext_resource type="Texture2D" uid="uid://b1npyxmkmsbat" path="res://Art/pause_uip.png" id="6_mwfdu"]
 [ext_resource type="Texture2D" uid="uid://jb24rl8v7rvi" path="res://Art/play_ui.png" id="7_ltuax"]
 [ext_resource type="Texture2D" uid="uid://o1e83m8rouhe" path="res://Art/play_uip.png" id="8_tcq88"]
@@ -17,7 +17,7 @@
 
 [node name="BurdUI" type="CanvasLayer"]
 script = ExtResource("1_sbpj5")
-burdPreviewScene = ExtResource("3_wnq2m")
+burdPreviewScene = ExtResource("6_8hxs0")
 
 [node name="BirdCounter" type="Control" parent="."]
 texture_filter = 1
@@ -107,7 +107,6 @@ wait_time = 10.0
 autostart = true
 
 [node name="Pause" type="TextureButton" parent="BirdCounter"]
-layout_mode = 0
 offset_left = 1071.0
 offset_top = 54.0
 offset_right = 1087.0
@@ -119,10 +118,9 @@ texture_pressed = ExtResource("6_mwfdu")
 stretch_mode = 0
 
 [node name="SpeedDown" type="TextureButton" parent="BirdCounter"]
-layout_mode = 0
-offset_left = 1029.0
+offset_left = 1028.0
 offset_top = 52.0
-offset_right = 1045.0
+offset_right = 1044.0
 offset_bottom = 68.0
 scale = Vector2(2, 2)
 mouse_filter = 1
@@ -132,10 +130,9 @@ stretch_mode = 0
 flip_h = true
 
 [node name="SpeedUp" type="TextureButton" parent="BirdCounter"]
-layout_mode = 0
-offset_left = 1111.0
+offset_left = 1110.0
 offset_top = 53.0
-offset_right = 1127.0
+offset_right = 1126.0
 offset_bottom = 69.0
 scale = Vector2(2, 2)
 mouse_filter = 1
@@ -144,10 +141,9 @@ texture_pressed = ExtResource("8_tcq88")
 stretch_mode = 0
 
 [node name="MenuButton" type="TextureButton" parent="BirdCounter"]
-layout_mode = 0
-offset_left = 25.0
+offset_left = 24.0
 offset_top = 20.0
-offset_right = 41.0
+offset_right = 40.0
 offset_bottom = 36.0
 scale = Vector2(3, 3)
 pivot_offset = Vector2(7.5, 8.5)
@@ -243,8 +239,7 @@ fit_content = true
 scroll_active = false
 autowrap_mode = 0
 
-[node name="Menu" type="Control" parent="."]
-visible = false
+[node name="BurdInfo2" type="Control" parent="."]
 texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
@@ -252,7 +247,7 @@ offset_top = 135.0
 offset_bottom = 135.0
 theme = ExtResource("3_2ffek")
 
-[node name="Filler" type="TextureRect" parent="Menu"]
+[node name="TextureRect4" type="TextureRect" parent="BurdInfo2"]
 modulate = Color(0, 0, 0, 0.403922)
 texture_filter = 1
 layout_mode = 0
@@ -264,12 +259,12 @@ scale = Vector2(13, 10)
 texture = ExtResource("5_ciy80")
 metadata/_edit_lock_ = true
 
-[node name="Continue" type="TextureButton" parent="Menu"]
+[node name="Button" type="TextureButton" parent="BurdInfo2"]
 layout_mode = 0
 offset_left = 480.0
-offset_top = 79.0
+offset_top = -15.0
 offset_right = 576.0
-offset_bottom = 111.0
+offset_bottom = 17.0
 scale = Vector2(2, 2)
 mouse_filter = 1
 texture_normal = ExtResource("2_g6ux6")
@@ -277,24 +272,25 @@ texture_pressed = ExtResource("3_gd4i2")
 stretch_mode = 0
 script = ExtResource("5_8e0gl")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Menu/Continue"]
+[node name="RichTextLabel" type="RichTextLabel" parent="BurdInfo2/Button"]
 layout_mode = 0
-offset_left = 20.5
-offset_top = -3.5
-offset_right = 100.5
-offset_bottom = 56.5
+offset_left = 13.0
+offset_top = -7.5
+offset_right = 93.0
+offset_bottom = 52.5
 mouse_filter = 1
 theme_override_font_sizes/normal_font_size = 32
-text = "cont."
+text = "pause"
 fit_content = true
 scroll_active = false
+metadata/_edit_lock_ = true
 
-[node name="Quit" type="TextureButton" parent="Menu"]
+[node name="Button2" type="TextureButton" parent="BurdInfo2"]
 layout_mode = 0
-offset_left = 480.0
-offset_top = 184.0
-offset_right = 576.0
-offset_bottom = 216.0
+offset_left = 487.0
+offset_top = 82.0
+offset_right = 583.0
+offset_bottom = 114.0
 scale = Vector2(2, 2)
 mouse_filter = 1
 texture_normal = ExtResource("2_g6ux6")
@@ -302,7 +298,7 @@ texture_pressed = ExtResource("3_gd4i2")
 stretch_mode = 0
 script = ExtResource("5_8e0gl")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="Menu/Quit"]
+[node name="RichTextLabel" type="RichTextLabel" parent="BurdInfo2/Button2"]
 layout_mode = 0
 offset_left = 15.5
 offset_top = -5.5
@@ -315,7 +311,7 @@ fit_content = true
 scroll_active = false
 metadata/_edit_lock_ = true
 
-[node name="Header" type="RichTextLabel" parent="Menu"]
+[node name="Name" type="RichTextLabel" parent="BurdInfo2"]
 layout_mode = 0
 offset_left = 516.0
 offset_top = -56.0
@@ -328,21 +324,15 @@ scroll_active = false
 autowrap_mode = 0
 
 [connection signal="timeout" from="BirdCounter/ForceUpdate" to="BirdCounter" method="_on_force_update_timeout"]
-[connection signal="pressed" from="BirdCounter/Pause" to="." method="_on_pause_pressed"]
-[connection signal="pressed" from="BirdCounter/SpeedDown" to="." method="_on_speed_down_pressed"]
-[connection signal="pressed" from="BirdCounter/SpeedUp" to="." method="_on_speed_up_pressed"]
-[connection signal="pressed" from="BirdCounter/MenuButton" to="." method="_on_menu_button_pressed"]
 [connection signal="button_down" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_button_down"]
 [connection signal="button_up" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_button_up"]
 [connection signal="mouse_exited" from="BurdInfo/Button" to="BurdInfo/Button" method="_on_mouse_exited"]
 [connection signal="pressed" from="BurdInfo/Button" to="." method="_on_button_pressed"]
-[connection signal="button_down" from="Menu/Continue" to="Menu/Continue" method="_on_button_down"]
-[connection signal="button_up" from="Menu/Continue" to="Menu/Continue" method="_on_button_up"]
-[connection signal="mouse_exited" from="Menu/Continue" to="Menu/Continue" method="_on_mouse_exited"]
-[connection signal="pressed" from="Menu/Continue" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Menu/Continue" to="." method="_on_continue_pressed"]
-[connection signal="button_down" from="Menu/Quit" to="Menu/Quit" method="_on_button_down"]
-[connection signal="button_up" from="Menu/Quit" to="Menu/Quit" method="_on_button_up"]
-[connection signal="mouse_exited" from="Menu/Quit" to="Menu/Quit" method="_on_mouse_exited"]
-[connection signal="pressed" from="Menu/Quit" to="." method="_on_button_pressed"]
-[connection signal="pressed" from="Menu/Quit" to="." method="_on_quit_pressed"]
+[connection signal="button_down" from="BurdInfo2/Button" to="BurdInfo2/Button" method="_on_button_down"]
+[connection signal="button_up" from="BurdInfo2/Button" to="BurdInfo2/Button" method="_on_button_up"]
+[connection signal="mouse_exited" from="BurdInfo2/Button" to="BurdInfo2/Button" method="_on_mouse_exited"]
+[connection signal="pressed" from="BurdInfo2/Button" to="." method="_on_button_pressed"]
+[connection signal="button_down" from="BurdInfo2/Button2" to="BurdInfo2/Button2" method="_on_button_down"]
+[connection signal="button_up" from="BurdInfo2/Button2" to="BurdInfo2/Button2" method="_on_button_up"]
+[connection signal="mouse_exited" from="BurdInfo2/Button2" to="BurdInfo2/Button2" method="_on_mouse_exited"]
+[connection signal="pressed" from="BurdInfo2/Button2" to="." method="_on_button_pressed"]

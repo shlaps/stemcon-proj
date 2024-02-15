@@ -316,6 +316,7 @@ func updateMeter(meter : ProgressBar, numerator, denominator):
 		meter.value = numerator
 	
 func _ready() -> void:
+	
 	WorldNode.timeChanged.connect(Callable(self, "onTimeChange"))
 	if not isChild: #on ready, randomize the genepool
 		var size = genotypes.size()
@@ -334,6 +335,9 @@ func _ready() -> void:
 	for i in get_parent().get_children():
 		birdCount += 1
 	name = str("Burd", birdCount)
+	
+	if WorldNode.currentTime > 0:
+		shouldHide = true
 	
 func _on_turn_cooldown_timeout() -> void:
 	if hunger <= 0:

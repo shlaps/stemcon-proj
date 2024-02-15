@@ -1,5 +1,6 @@
 extends Camera2D
 var oldMousePos = null
+@onready var UI = $"/root/World/BurdUI"
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -7,6 +8,7 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta: float) -> void:
+	if UI.find_child("Menu").visible == true: return
 	if Input.is_action_pressed("CameraDrag"):
 		var newMousePos = get_viewport().get_mouse_position()
 		position -= (newMousePos - oldMousePos).normalized() * clamp(2 * (4.5 / zoom.x), 3, 10)

@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://bxiej4vm1plc1"]
+[gd_scene load_steps=20 format=3 uid="uid://bxiej4vm1plc1"]
 
 [ext_resource type="Script" path="res://Scripts/SpawnBurdModel.gd" id="1_8prhy"]
 [ext_resource type="PackedScene" uid="uid://bcpg1147s1r06" path="res://Scenes/MainMenuBurd.tscn" id="2_uxbg3"]
@@ -6,8 +6,12 @@
 [ext_resource type="PackedScene" uid="uid://dbl7pixg3yfsl" path="res://Scenes/world1.tscn" id="4_4o01x"]
 [ext_resource type="FontFile" uid="uid://csk6pf314d0ot" path="res://Art/one-of-a-kind-lite-edition.rg.ttf" id="5_r0gh5"]
 [ext_resource type="Texture2D" uid="uid://bycxev4sx2h8e" path="res://Art/menuburd1.png" id="6_hbsbc"]
+[ext_resource type="Theme" uid="uid://legmsqjj1vtc" path="res://Art/BurdUI.tres" id="6_mqt7n"]
 [ext_resource type="Texture2D" uid="uid://vfjows14k64j" path="res://Art/menuburd2.png" id="7_230s7"]
+[ext_resource type="Texture2D" uid="uid://jcf5r4kfgprh" path="res://Art/button_1.png" id="7_ng43o"]
+[ext_resource type="Texture2D" uid="uid://brh5ubnj8tura" path="res://Art/button_1p.png" id="8_ohif6"]
 [ext_resource type="AudioStream" uid="uid://c87bk4tw8vx8c" path="res://Art/awful.wav" id="8_posfn"]
+[ext_resource type="Script" path="res://Scripts/ImageButtonOffset.gd" id="9_8cvd4"]
 [ext_resource type="Script" path="res://Scripts/repeatAudio.gd" id="9_rkoa7"]
 
 [sub_resource type="Sky" id="Sky_vw0b4"]
@@ -124,106 +128,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 8.10371, 4.2933)
 script = ExtResource("3_shs8s")
 newScene = ExtResource("4_4o01x")
 
-[node name="Menu" type="Control" parent="UI"]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
-
-[node name="Title" type="RichTextLabel" parent="UI/Menu"]
-layout_mode = 0
-offset_left = 37.0
-offset_top = 16.0
-offset_right = 1137.0
-offset_bottom = 118.0
-pivot_offset = Vector2(500, 50)
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
-theme_override_constants/shadow_offset_x = 5
-theme_override_fonts/normal_font = ExtResource("5_r0gh5")
-theme_override_font_sizes/normal_font_size = 100
-text = "Burdtastic simulator"
-scroll_active = false
-
-[node name="MenuBurd" type="Button" parent="UI/Menu"]
-layout_mode = 0
-offset_left = 991.0
-offset_top = 45.0
-offset_right = 1141.0
-offset_bottom = 195.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
-
-[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd"]
-layout_mode = 0
-offset_left = -39.0
-offset_top = -27.0
-offset_right = 211.0
-offset_bottom = 173.0
-rotation = 0.436332
-pivot_offset = Vector2(125, 100)
-texture = ExtResource("6_hbsbc")
-expand_mode = 1
-flip_h = true
-
-[node name="MenuBurd2" type="Button" parent="UI/Menu"]
-layout_mode = 0
-offset_left = -18.0
-offset_top = 29.0
-offset_right = 132.0
-offset_bottom = 179.0
-theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
-theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
-
-[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd2"]
-layout_mode = 0
-offset_left = -33.0
-offset_top = -13.0
-offset_right = 217.0
-offset_bottom = 187.0
-rotation = -0.436332
-pivot_offset = Vector2(125, 100)
-texture = ExtResource("7_230s7")
-expand_mode = 1
-
-[node name="StartButton" type="Button" parent="UI/Menu"]
-layout_mode = 0
-offset_left = 500.0
-offset_top = 250.0
-offset_right = 700.0
-offset_bottom = 310.0
-pivot_offset = Vector2(100, 30)
-text = "Start"
-
-[node name="Credits" type="Button" parent="UI/Menu"]
-layout_mode = 0
-offset_left = 500.0
-offset_top = 350.0
-offset_right = 700.0
-offset_bottom = 410.0
-pivot_offset = Vector2(100, 30)
-text = "Credits"
-
-[node name="Quit" type="Button" parent="UI/Menu"]
-layout_mode = 0
-offset_left = 500.0
-offset_top = 450.0
-offset_right = 700.0
-offset_bottom = 510.0
-pivot_offset = Vector2(100, 30)
-text = "Exit"
-
 [node name="Credits" type="Control" parent="UI"]
 visible = false
+texture_filter = 1
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+theme = ExtResource("6_mqt7n")
 
 [node name="CreditHeader" type="RichTextLabel" parent="UI/Credits"]
 layout_mode = 0
@@ -256,18 +168,181 @@ my bestest buddy Loren for making the bird art you see in the menu
 and godot :)"
 scroll_active = false
 
-[node name="BackButton" type="Button" parent="UI/Credits"]
+[node name="BackButton2" type="TextureButton" parent="UI/Credits"]
+offset_left = 931.0
+offset_top = 573.0
+offset_right = 1027.0
+offset_bottom = 605.0
+scale = Vector2(2, 2)
+mouse_filter = 1
+texture_normal = ExtResource("7_ng43o")
+texture_pressed = ExtResource("8_ohif6")
+stretch_mode = 0
+script = ExtResource("9_8cvd4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Credits/BackButton2"]
 layout_mode = 0
-offset_left = 928.0
-offset_top = 576.0
-offset_right = 1128.0
-offset_bottom = 636.0
-pivot_offset = Vector2(100, 30)
+offset_left = 17.0
+offset_top = -3.0
+offset_right = 97.0
+offset_bottom = 57.0
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 32
 text = "Back"
+fit_content = true
+scroll_active = false
+metadata/_edit_lock_ = true
 
 [node name="Timer" type="Timer" parent="UI"]
 wait_time = 0.5
 autostart = true
+
+[node name="Menu" type="Control" parent="UI"]
+texture_filter = 1
+layout_mode = 3
+anchors_preset = 0
+offset_top = 135.0
+offset_bottom = 135.0
+theme = ExtResource("6_mqt7n")
+
+[node name="Start" type="TextureButton" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 483.0
+offset_top = 80.0
+offset_right = 579.0
+offset_bottom = 112.0
+scale = Vector2(2, 2)
+mouse_filter = 1
+texture_normal = ExtResource("7_ng43o")
+texture_pressed = ExtResource("8_ohif6")
+stretch_mode = 0
+script = ExtResource("9_8cvd4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Menu/Start"]
+layout_mode = 0
+offset_left = 12.5
+offset_top = -3.5
+offset_right = 92.5
+offset_bottom = 56.5
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 32
+text = "Start"
+fit_content = true
+scroll_active = false
+metadata/_edit_lock_ = true
+
+[node name="Credits" type="TextureButton" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 486.0
+offset_top = 209.0
+offset_right = 582.0
+offset_bottom = 241.0
+scale = Vector2(2, 2)
+mouse_filter = 1
+texture_normal = ExtResource("7_ng43o")
+texture_pressed = ExtResource("8_ohif6")
+stretch_mode = 0
+script = ExtResource("9_8cvd4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Menu/Credits"]
+layout_mode = 0
+offset_left = 2.5
+offset_top = -3.5
+offset_right = 98.5
+offset_bottom = 56.5
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 32
+text = "Credits"
+fit_content = true
+scroll_active = false
+metadata/_edit_lock_ = true
+
+[node name="Quit" type="TextureButton" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 485.0
+offset_top = 333.0
+offset_right = 581.0
+offset_bottom = 365.0
+scale = Vector2(2, 2)
+mouse_filter = 1
+texture_normal = ExtResource("7_ng43o")
+texture_pressed = ExtResource("8_ohif6")
+stretch_mode = 0
+script = ExtResource("9_8cvd4")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="UI/Menu/Quit"]
+layout_mode = 0
+offset_left = 18.5
+offset_top = -3.0
+offset_right = 98.5
+offset_bottom = 57.0
+mouse_filter = 1
+theme_override_font_sizes/normal_font_size = 32
+text = "Quit"
+fit_content = true
+scroll_active = false
+metadata/_edit_lock_ = true
+
+[node name="Title" type="RichTextLabel" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 37.0
+offset_top = -119.0
+offset_right = 1137.0
+offset_bottom = -17.0
+pivot_offset = Vector2(500, 50)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 5
+theme_override_fonts/normal_font = ExtResource("5_r0gh5")
+theme_override_font_sizes/normal_font_size = 100
+text = "Burdtastic simulator"
+scroll_active = false
+
+[node name="MenuBurd" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = 991.0
+offset_top = -90.0
+offset_right = 1141.0
+offset_bottom = 60.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd"]
+layout_mode = 0
+offset_left = -39.0
+offset_top = -27.0
+offset_right = 211.0
+offset_bottom = 173.0
+rotation = 0.436332
+pivot_offset = Vector2(125, 100)
+texture = ExtResource("6_hbsbc")
+expand_mode = 1
+flip_h = true
+
+[node name="MenuBurd2" type="Button" parent="UI/Menu"]
+layout_mode = 0
+offset_left = -18.0
+offset_top = -106.0
+offset_right = 132.0
+offset_bottom = 44.0
+theme_override_styles/normal = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_p2ofy")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_p2ofy")
+
+[node name="TextureRect" type="TextureRect" parent="UI/Menu/MenuBurd2"]
+layout_mode = 0
+offset_left = -33.0
+offset_top = -13.0
+offset_right = 217.0
+offset_bottom = 187.0
+rotation = -0.436332
+pivot_offset = Vector2(125, 100)
+texture = ExtResource("7_230s7")
+expand_mode = 1
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 7.52944, 9.21789, 3.2794)
@@ -279,9 +354,21 @@ max_distance = 4096.0
 script = ExtResource("9_rkoa7")
 
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
-[connection signal="pressed" from="UI/Menu/StartButton" to="UI" method="_on_start_button_pressed"]
-[connection signal="pressed" from="UI/Menu/Credits" to="UI" method="_on_credits_pressed"]
-[connection signal="pressed" from="UI/Menu/Quit" to="UI" method="_on_quit_pressed"]
-[connection signal="pressed" from="UI/Credits/BackButton" to="UI" method="_on_back_button_pressed"]
+[connection signal="button_down" from="UI/Credits/BackButton2" to="UI/Credits/BackButton2" method="_on_button_down"]
+[connection signal="button_up" from="UI/Credits/BackButton2" to="UI/Credits/BackButton2" method="_on_button_up"]
+[connection signal="mouse_exited" from="UI/Credits/BackButton2" to="UI/Credits/BackButton2" method="_on_mouse_exited"]
+[connection signal="pressed" from="UI/Credits/BackButton2" to="UI" method="_on_back_button_2_pressed"]
 [connection signal="timeout" from="UI/Timer" to="UI" method="_on_timer_timeout"]
+[connection signal="button_down" from="UI/Menu/Start" to="UI/Menu/Start" method="_on_button_down"]
+[connection signal="button_up" from="UI/Menu/Start" to="UI/Menu/Start" method="_on_button_up"]
+[connection signal="mouse_exited" from="UI/Menu/Start" to="UI/Menu/Start" method="_on_mouse_exited"]
+[connection signal="pressed" from="UI/Menu/Start" to="UI" method="_on_start_pressed"]
+[connection signal="button_down" from="UI/Menu/Credits" to="UI/Menu/Credits" method="_on_button_down"]
+[connection signal="button_up" from="UI/Menu/Credits" to="UI/Menu/Credits" method="_on_button_up"]
+[connection signal="mouse_exited" from="UI/Menu/Credits" to="UI/Menu/Credits" method="_on_mouse_exited"]
+[connection signal="pressed" from="UI/Menu/Credits" to="UI" method="_on_credits_pressed"]
+[connection signal="button_down" from="UI/Menu/Quit" to="UI/Menu/Quit" method="_on_button_down"]
+[connection signal="button_up" from="UI/Menu/Quit" to="UI/Menu/Quit" method="_on_button_up"]
+[connection signal="mouse_exited" from="UI/Menu/Quit" to="UI/Menu/Quit" method="_on_mouse_exited"]
+[connection signal="pressed" from="UI/Menu/Quit" to="UI" method="_on_quit_pressed"]
 [connection signal="finished" from="AudioStreamPlayer3D" to="AudioStreamPlayer3D" method="_on_finished"]
